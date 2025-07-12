@@ -31,10 +31,6 @@ locals {
   }
 }
 
-module "optum_ips_sa" {
-  source = "git::https://github.com/dojo360/optum-ips.git"
-}
-
 
 resource "azurerm_storage_account" "AZ-UHG-SA" {
   for_each            = var.StorageAccount
@@ -56,7 +52,6 @@ resource "azurerm_storage_account" "AZ-UHG-SA" {
 
   network_rules {
     default_action             = each.value.NetworkRule.AllNetwork
-    ip_rules                   = module.optum_ips_sa.tower_ips
     virtual_network_subnet_ids = local.subnetList[each.key].subnet_ids
   }
   tags = var.tags
