@@ -69,6 +69,24 @@ jobs:
     environment:
          name: approval
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Setup Terraform
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TF_VERSION }}
+      - name: Az login
+        uses: Azure/login@v2.0.0
+        continue-on-error: false
+        with:
+         creds: '{"clientId":"${{ env.AZURE_CLIENT_ID }}","clientSecret":"${{ env.AZURE_CLIENT_SECRET }}","subscriptionId":"${{ env.AZURE_SUBSCRIPTION_ID }}","tenantId":"${{ env.AZURE_TENANT_ID }}"}'
+
+      # Terraform Init
+      - name: Terraform Init
+        run: terraform init -backend-config="./env/${{ inputs.environments}}/${{ inputs.environments}}.backend.conf"
+
       - name: Download tfplan artifact
         uses: actions/download-artifact@v4
         with:
