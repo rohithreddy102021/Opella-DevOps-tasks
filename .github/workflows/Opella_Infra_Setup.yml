@@ -87,16 +87,16 @@ jobs:
       - name: Terraform Init
         run: terraform init -backend-config="./env/${{ inputs.environments}}/${{ inputs.environments}}.backend.conf"
 
-      - name: Download tfplan artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: tfplan
-          path: .
-  #    # Terraform Plan
-  #    - name: Terraform Plan
-  #      run: terraform plan -var-file="./env/${{ inputs.environments}}/${{ inputs.environments}}.tfvars" -out=plan.out
+ #     - name: Download tfplan artifact
+ #       uses: actions/download-artifact@v4
+ #       with:
+ #         name: tfplan
+ #         path: .
+      # Terraform Plan
+      - name: Terraform Plan
+        run: terraform plan -var-file="./env/${{ inputs.environments}}/${{ inputs.environments}}.tfvars"
 
       # Terraform Apply - only on main branch
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main'
-        run: terraform apply -var-file="./env/${{ inputs.environments}}/${{ inputs.environments}}.tfvars" -auto-approve tfplan
+        run: terraform apply -var-file="./env/${{ inputs.environments}}/${{ inputs.environments}}.tfvars" -auto-approve
