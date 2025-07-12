@@ -91,6 +91,10 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: tfplan
+          path: .
+  #    # Terraform Plan
+  #    - name: Terraform Plan
+  #      run: terraform plan -var-file="./env/${{ inputs.environments}}/${{ inputs.environments}}.tfvars" -out=plan.out
 
       # Terraform Apply - only on main branch
       - name: Terraform Apply
